@@ -13,14 +13,21 @@ var mainState = {
 
     // Load the jump sound
     game.load.audio('jump', 'assets/jump.wav');
+    game.load.audio('cachorro', 'assets/cachorro.wav');
+    game.load.audio('dentifricio', 'assets/dentifricio.wav');
+
 
     game.load.image('jumpbutton', 'assets/jump.png');
+
+
+    this.width = $('body').width();
+    this.height = $('height').height();
   },
 
   create: function() {
 
-    var bg = game.add.tileSprite(0, 0, 1000, 1000, "background");
-
+    var bg = game.add.sprite(game.world.centerX, game.world.centerY, "background");
+    bg.anchor.set(0.5);
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     this.pipes = game.add.group();
@@ -37,7 +44,7 @@ var mainState = {
     // New anchor position
     this.bird.anchor.setTo(-0.2, 0.5);
 
-    var jumpbutton = game.add.button(game.world.centerX - 40, 420, 'jumpbutton', this.jump, this, 2, 1, 0);
+    game.input.onDown.add(this.jump, this);
 
     this.score = 0;
     this.labelScore = this.game.add.text(20, 20, "0", {
@@ -46,7 +53,7 @@ var mainState = {
     });
 
     // Add the jump sound
-    this.jumpSound = this.game.add.audio('jump');
+    this.jumpsSound = [this.game.add.audio('cachorro'), this.game.add.audio('dentifricio')];
   },
 
   update: function() {
@@ -73,7 +80,7 @@ var mainState = {
     }, 100).start();
 
     // Play sound
-    this.jumpSound.play();
+    this.jumpsSound[Math.floor(Math.random() * this.jumpsSound.length) + 0].play();
   },
 
   hitPipe: function() {
@@ -112,7 +119,7 @@ var mainState = {
 
     for (var i = 0; i < 8; i++)
       if (i != hole && i != hole + 1)
-        this.addOnePipe(400, i * 60 + 10);
+        this.addOnePipe(this.width, i * 60 + 10);
 
     this.score += 1;
     this.labelScore.text = this.score;
