@@ -1,4 +1,4 @@
-var game = new Phaser.Game("100%", "auto", Phaser.AUTO, 'gameDiv');
+var game = new Phaser.Game("100%", "100%", Phaser.AUTO, 'gameDiv');
 
 var mainState = {
 
